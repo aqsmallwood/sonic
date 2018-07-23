@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class HttpServerThread extends Thread {
     private static int port, threads;
     private static final String SERVER_PORT = System.getProperty("httpPort", "5000");
-    private static final String SERVER_THREADS = System.getProperty("httpPort", "5");
+    private static final String SERVER_THREADS = System.getProperty("httpThreads", "5");
     private static HttpServer httpServer;
 
     static {

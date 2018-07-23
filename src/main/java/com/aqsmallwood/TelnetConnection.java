@@ -1,6 +1,7 @@
 package com.aqsmallwood;
 
 import com.aqsmallwood.services.TicketService;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.ErrorMessages_zh_CN;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -44,17 +45,23 @@ public class TelnetConnection extends Thread
                     connected = false;
                     continue;
                 }
-                command = statement[1];
-                // If there is a second space, the rest of the line is the final argument
-                if (statement.length > 2) {
-                    data = statement[2].split("\n")[0];
-                }
+
                 if (!services.containsKey(service)) {
                     response = "Service " + service + " doesn't exist";
                 } else {
-                    // There should be a parent Service class so this isn't so hard-coded
-                    response = ((TicketService) services.get(service)).runCommand(command, data);
+                    try {
+                        command = statement[1];
+                        // If there is a second space, the rest of the line is the final argument
+                        if (statement.length > 2) {
+                            data = statement[2].split("\n")[0];
+                        }
+                        // There should be a parent Service class so this isn't so hard-coded
+                        response = ((TicketService) services.get(service)).runCommand(command, data);
+                    } catch (Exception e) {
+                        response = "Invalid Command";
+                    }
                 }
+
                 PrintWriter writer = new PrintWriter(output, true);
                 writer.println(response);
                 System.out.println("Wrote output");

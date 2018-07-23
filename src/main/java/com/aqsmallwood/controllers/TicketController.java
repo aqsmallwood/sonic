@@ -26,9 +26,8 @@ public class TicketController extends Controller {
     public Response POST(HttpExchange request) {
         try {
             String requestBody = getRequestBody(request);
-            // The requestBody should be transformed/actually read
-            // This is a very simple POST implementation
-            return new Response(HTTP_CREATED, new Ticket(requestBody).toString());
+            String response = ticketService.addTicket(requestBody);
+            return new Response(HTTP_CREATED, response);
         } catch (IOException e) {
             return new Response(HTTP_BAD_REQUEST);
         }
